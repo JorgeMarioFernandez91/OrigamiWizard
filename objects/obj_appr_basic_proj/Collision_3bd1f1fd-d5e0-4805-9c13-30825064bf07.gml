@@ -1,46 +1,39 @@
-// check if projectile collided with other object
+// check if projectile collided with other object (enemies)
 with (other){
 	hp = hp - 1;
 	if hp <= 0{ 
-		
-		random_set_seed(date_current_datetime());	//randomizes seed so each step we can get a new number for our flag
+		//randomizes seed so each step we can get a new number for our flag
+		random_set_seed(date_current_datetime());	
 		randomize();
 
 		var spawn_ = irandom_range(1,3);
-		
 		instance_destroy();
-		//spawn item
+		//spawn item/powerup
 		if (!instance_exists(obj_item_1) && global.Powerup1 == false){
 			instance_create_layer(x,y,layer, obj_item_1);
 		}
-		
+		//spawn health
 		if (spawn_ == 1){
 			instance_create_layer(x,y,layer, obj_life);
 		}
-		
+		//if boss is defeated create level exit
 		if (sprite_index == spr_boss){
 			show_debug_message("Exit Created!")
 			instance_create_layer(room_width / 2, room_height / 2, "Instances", obj_Exit);
 		
 		}
-		
+		//check if transformation is available
 		if (global.Origami_cooldown <= 0){
-			
+			//keep track of number of enemy kills
 			global.Enemy_kills += 1;
+			//if number of kills is greater or equal 5 then prompt to transform
 			if (global.Enemy_kills >= 5){
 				global.Origami_available = true;
-				show_debug_message("CAN TRANSFORM")
 			}
-			
 		}
-		
+		//keep track of ingame timer to later show the player their fastest time
 		var curr_minute = date_current_datetime();
-
 		var diff = date_second_span(global.time , curr_minute);
-
-		show_debug_message("!!!!" + string(diff))
-		
-		
     }
 }
 
