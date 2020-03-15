@@ -1,24 +1,73 @@
 if instance_exists(obj_Player) && sprite_index != spr_boss
 {
-	var dir = point_direction(x, y, obj_Player.x, obj_Player.y);
-	image_angle += clamp(angle_difference(dir, image_angle), -10, 10);
-	direction = image_angle;
-	speed = spd;
-	if sprite_index == spr_RoomGen_Demon
-	    {
-	    if point_distance(x, y, obj_Player.x, obj_Player.y) < 256
-	        {
-	        direction = image_angle + 180;
-	        }
-	    if alarm[0] < 0
-	        {
-	        with (instance_create_layer(x, y, "Instances", obj_Bullet))
-	            {
-	            direction = other.image_angle;
-	            }
-	        alarm[0] = room_speed;
-	        }
-	    }
+	random_set_seed(date_current_datetime());	//randomizes seed so each step we can get a new number for our flag
+	randomize();
+	
+	var spr_direction = irandom_range(1,4);
+	//var spr_direction = 1;
+	var move_stay = irandom_range(1,2);
+	//var move_stay = 2;
+	
+	if move_stay == 1 and walk < 1{
+		move_cooldown = 100;
+	}
+	
+	if move_cooldown > 0 {
+		speed = 0;	
+	}
+	else {
+		speed = 2;	
+	}
+		
+	if walk < 1 {
+		if spr_direction == 1 {
+			direction = 0;	
+		}
+		else if spr_direction == 2 {
+			direction = 90;
+		}
+		else if spr_direction == 3 {
+			direction = 180	
+		}
+		else if spr_direction == 4 {
+			direction = 270;	
+		}
+		walk = 150;
+	}
+	
+	move_cooldown -= 1;
+	walk -= 1;
+	
+}
+
+
+// check for collisions
+if place_meeting(x,y, obj_Wall){
+	
+	if sprite_index == spr_Goblin{
+		
+		if bbox_top < 64  {
+			y = 100;
+			direction = 270;
+		}
+		if bbox_bottom > room_height - 64 {
+			
+			y = room_height - 100;
+			direction = 180;
+		}
+		if bbox_left < 64 {
+			x = 100;
+			direction = 0;
+		}
+		if bbox_right > room_width - 64 {
+			x = room_width - 110;
+			direction = 90;
+		}
+		
+	}
+	
+	
+	
 }
 
 if sprite_index == spr_Goblin {
@@ -135,3 +184,27 @@ if sprite_index == spr_boss {
 	move_cooldown -= 1;
 	attack_cooldown -= 1;	//help decrement the cooldown
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

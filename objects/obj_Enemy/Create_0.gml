@@ -1,5 +1,8 @@
 attack_cooldown = 0;
 move_cooldown = 0;
+walk = 0;
+
+temp_move_flag_holder = 0;
 
 spd = 3;
 hp = 1;
