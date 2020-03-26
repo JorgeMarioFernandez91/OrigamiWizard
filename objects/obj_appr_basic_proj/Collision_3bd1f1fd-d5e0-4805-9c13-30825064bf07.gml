@@ -1,25 +1,46 @@
 // check if projectile collided with other object (enemies)
 with (other){
-	hp = hp - 1;
+	
+	
+	audio_play_sound(snd_paper_hit, 1000, false);
+					
+	
+	if (global.Powerup2 == false){
+		hp = hp - 1;
+	}
+	else if (global.Powerup2 == true){
+		hp = hp - 2;	
+	}
+	
+	
 	if hp <= 0{ 
 		//randomizes seed so each step we can get a new number for our flag
 		random_set_seed(date_current_datetime());	
 		randomize();
 
-		var spawn_ = irandom_range(1,3);
+		var spawn_ = irandom_range(1,5);
 		instance_destroy();
 		//spawn item/powerup
-		if (!instance_exists(obj_item_1) && global.Powerup1 == false){
+		if (!instance_exists(obj_item_1) && global.Powerup1 == false && spawn_ == 1){
 			instance_create_layer(x,y,layer, obj_item_1);
 		}
-		//spawn health
-		if (spawn_ == 1){
+		else if (!instance_exists(obj_item_2) && global.Powerup2 == false && spawn_ == 2){
+			instance_create_layer(x,y,layer, obj_item_2);
+		}
+		else if (spawn_ == 3 || spawn_ == 4){
 			instance_create_layer(x,y,layer, obj_life);
 		}
 		//if boss is defeated create level exit
-		if (sprite_index == spr_boss){
-			show_debug_message("Exit Created!")
+		if (sprite_index == spr_boss ){
+			//show_debug_message("Exit Created!")
+			audio_play_sound(snd_boss1_death, 1000, false);
 			instance_create_layer(room_width / 2, room_height / 2, "Instances", obj_Exit);
+		
+		}
+		else if (sprite_index == spr_boss_2 ){
+			//show_debug_message("Exit Created!")
+			audio_play_sound(snd_boss2_death, 1000, false);
+			instance_create_layer(room_width / 2, room_height / 2, "Instances", obj_Exit_2);
 		
 		}
 		//check if transformation is available

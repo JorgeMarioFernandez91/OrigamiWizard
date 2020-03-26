@@ -1,4 +1,4 @@
-if instance_exists(obj_Player) && sprite_index != spr_boss
+if instance_exists(obj_Player) && sprite_index != spr_boss && sprite_index != spr_boss_2
 {
 	random_set_seed(date_current_datetime());	//randomizes seed so each step we can get a new number for our flag
 	randomize();
@@ -44,7 +44,7 @@ if instance_exists(obj_Player) && sprite_index != spr_boss
 // check for collisions
 if place_meeting(x,y, obj_Wall){
 	
-	if sprite_index == spr_Goblin{
+	if (sprite_index == spr_Goblin || sprite_index == spr_Cube){
 		
 		if bbox_top < 64  {
 			y = 100;
@@ -70,7 +70,7 @@ if place_meeting(x,y, obj_Wall){
 	
 }
 
-if sprite_index == spr_Goblin {
+if (sprite_index == spr_Goblin || sprite_index == spr_Cube) {
 	//randomizes seed so each step we can get a new number for our flag
 	random_set_seed(date_current_datetime());	
 	randomize();
@@ -87,10 +87,23 @@ if sprite_index == spr_Goblin {
 		}
 	
 		if (attk_flag == 1){		//if true then attack
-			with(instance_create_layer(x,y,layer, obj_fireball_attack)){
-				//attack where the player was last seen
-				direction = point_direction(x,y,x_corr,y_corr);		
-			}	
+			
+			if (sprite_index == spr_Goblin){
+				with(instance_create_layer(x,y,layer, obj_fireball_attack)){
+					//attack where the player was last seen
+					direction = point_direction(x,y,x_corr,y_corr);		
+				}	
+				
+			}
+			else if (sprite_index == spr_Cube){
+				with(instance_create_layer(x,y,layer, obj_energyball_attack)){
+					//attack where the player was last seen
+					direction = point_direction(x,y,x_corr,y_corr);		
+				}	
+				
+			}
+			
+			
 		}
 		//reset the attack cooldown so enemy is not always attacking
 		attack_cooldown = 50;
@@ -100,6 +113,13 @@ if sprite_index == spr_Goblin {
 }
 
 if sprite_index == spr_boss {
+	
+	if (laugh == true){
+					
+		audio_play_sound(snd_boss1_laugh, 1000, false);
+		laugh = false;
+					
+	}
 	
 	random_set_seed(date_current_datetime());	//randomizes seed so each step we can get a new number for our flag
 	randomize();
@@ -121,7 +141,6 @@ if sprite_index == spr_boss {
 			y_corr_player = obj_Player.y;	//get y coord of player
 		}
 	
-		show_debug_message(y_corr_player);
 		
 		if (attk_flag == 1){		//if true then attack
 		
@@ -185,26 +204,110 @@ if sprite_index == spr_boss {
 	attack_cooldown -= 1;	//help decrement the cooldown
 }
 
+if sprite_index == spr_boss_2 {
+	
+	var cx = camera_get_view_x(view_camera[0]);
+	var cy = camera_get_view_y(view_camera[0]);
+	var cw = camera_get_view_width(view_camera[0]);
+	var ch = camera_get_view_height(view_camera[0]);
+	
+	x = cw/2;
+	y = ch/2;
+	
+	random_set_seed(date_current_datetime());	//randomizes seed so each step we can get a new number for our flag
+	randomize();
 
+	var attk_flag = irandom_range(1,5);
+	
+	if (attack_continuous > 0){
+		attk_flag = 1;
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	//attack player
+	if (attk_flag == 1 && attack_continuous > 0 ) {			//we can have this same setup for enemy movement towards player
+	
+		with(instance_create_layer(x,y,layer, obj_energyball_attack)){
+		
+			direction = point_direction(x,y, obj_Enemy.x_corr_point_1,obj_Enemy.y_corr_point_1);	
+			
+			if (obj_Enemy.y_corr_point_1 < 760 && obj_Enemy.x_corr_point_1 == 0) {
+				obj_Enemy.x_corr_point_1 = 0;
+				obj_Enemy.y_corr_point_1 += 10;
+			}
+			else if (obj_Enemy.y_corr_point_1 >= 760 && obj_Enemy.x_corr_point_1 <= 1015) {
+				obj_Enemy.x_corr_point_1 += 10;
+			}
+			else if (obj_Enemy.y_corr_point_1 >= 10 && obj_Enemy.x_corr_point_1 >= 1015){
+				obj_Enemy.y_corr_point_1 -= 10;
+			}
+			else if (obj_Enemy.y_corr_point_1 <= 0){
+				obj_Enemy.x_corr_point_1 -= 10;
+			}
+		}	
+		
+		with(instance_create_layer(x,y,layer, obj_energyball_attack)){
+			
+			direction = point_direction(x,y, obj_Enemy.x_corr_point_2,obj_Enemy.y_corr_point_2);	
+			
+			if (obj_Enemy.y_corr_point_2 < 760 && obj_Enemy.x_corr_point_2 == 0) {
+				obj_Enemy.x_corr_point_2 = 0;
+				obj_Enemy.y_corr_point_2 += 10;
+			}
+			else if (obj_Enemy.y_corr_point_2 >= 760 && obj_Enemy.x_corr_point_2 <= 1015) {
+				obj_Enemy.x_corr_point_2 += 10;
+			}
+			else if (obj_Enemy.y_corr_point_2 >= 10 && obj_Enemy.x_corr_point_2 >= 1015){
+				obj_Enemy.y_corr_point_2 -= 10;
+			}
+			else if (obj_Enemy.y_corr_point_2 <= 0){
+				obj_Enemy.x_corr_point_2 -= 10;
+			}
+		}	
+		
+		energy_ball_cooldown = 10;
+	}
+	else if (attack_cooldown < 1 && attk_flag == 2 || attack_cooldown < 1 && attk_flag == 3){
+		var x_corr_player;
+		var y_corr_player;
+	
+		with(obj_Player){
+			x_corr_player = obj_Player.x;	//get x coord of player
+			y_corr_player = obj_Player.y;	//get y coord of player
+		}
+	
+		
+		if (attk_flag == 2){		//if true then attack
+		
+			with(instance_create_layer(x,y,layer, obj_energyball_attack)){
+				direction = point_direction(x,y,x_corr_player,y_corr_player);		//attack where the player was last seen				
+			}	
+		}
+		else if (attk_flag == 3){		//if true then attack
+			with(instance_create_layer(x,y,layer, obj_energyball_attack)){
+				direction = point_direction(x,y,x_corr_player,y_corr_player);		//attack where the player was last seen
+			}	
+			with(instance_create_layer(x,y,layer, obj_energyball_attack)){
+				direction = point_direction(x,y,x_corr_player+100,y_corr_player+100);		//attack where the player was last seen
+			}
+			with(instance_create_layer(x,y,layer, obj_energyball_attack)){
+				direction = point_direction(x,y,x_corr_player-100,y_corr_player-100);		//attack where the player was last seen
+			}
+		}
+		
+		attack_cooldown = 30;
+		total_attacks += 1
+	}
+	
+	energy_ball_cooldown -= 1;
+	attack_cooldown -= 1;	//help decrement the cooldown
+	attack_continuous -= 1;	//help decrement the cooldown
+	
+	if (total_attacks > 15){
+		total_attacks = 0;
+		attack_continuous = 150;
+	}
+	
+	
+}
 
 

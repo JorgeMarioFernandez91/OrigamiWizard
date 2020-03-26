@@ -97,7 +97,7 @@ if ds_exists(map, ds_type_map)
 	if( map[? "end"] == false){
 	
 		if (i == 1){
-			 map[? "enemy"] = _e + string(irandom_range(1, 2));
+			map[? "enemy"] = _e + string(irandom_range(1, 2));
 		}
 		else if (i == 2){
 			map[? "enemy"] = _e + string(irandom_range(2, 3));

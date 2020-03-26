@@ -38,7 +38,8 @@ global.RoomGen_grid = ds_grid_create(1, 1);
 
 global.Player_health = 20;
 global.Max_health = 20;
-global.Powerup1 = false;
+global.Powerup1 = false;	//split attacks
+global.Powerup2 = false;	//more damage
 
 global.Restart = false;
 

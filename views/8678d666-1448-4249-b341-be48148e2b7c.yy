@@ -24,7 +24,13 @@
         "3dad0fb0-4227-42fc-813c-bcd70bf77de0",
         "0efbd809-8fc2-4750-90c6-e2b9384e2df8",
         "9900ebbd-48d0-4405-b33b-66406be0cb36",
-        "4bb5c76c-a440-4429-9471-bc2e47f0f3b5"
+        "4bb5c76c-a440-4429-9471-bc2e47f0f3b5",
+        "7c8253c8-7e7a-4857-a834-a093dced0ef5",
+        "fc43123b-4892-473e-be21-9363d9df2198",
+        "5c927ec8-8f0e-4c12-a7b0-7d6bda182425",
+        "ccfebd84-f09d-4123-bf59-8dd71f4aa389",
+        "dc49685a-0134-4149-9319-0de04375259a",
+        "158582c6-59cc-4db4-ae2a-e4ccbc62b193"
     ],
     "filterType": "GMSprite",
     "folderName": "Origami_Sprites",

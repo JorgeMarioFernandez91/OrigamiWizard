@@ -122,7 +122,7 @@ switch(pos)
         // Check to see if the room is the exit room and create Exit object if it is
         if map[? "end"]
             {
-				//do nothing
+				// do nothing
             }
         break;   
 

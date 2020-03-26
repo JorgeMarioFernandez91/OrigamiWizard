@@ -146,14 +146,14 @@ switch(pos)
                 switch(_type)
                     {
 					case "goblin":
-                        sprite_index = spr_Goblin;
+                        sprite_index = spr_Cube;
                         spd = 2;
-                        hp = 3;		// change the health of the goblin enemy
+                        hp = 4;		// change the health of the goblin enemy
                         break;
 					case "boss":
-						sprite_index = spr_boss;
+						sprite_index = spr_boss_2;
 						spd = 2;
-						hp = 20;
+						hp = 40;
                     }
                 }
             }
